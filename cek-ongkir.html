@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Ongkir - LINTAS TATA SAMUDERA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo-link">
+    <div class="logo-wrapper">
+      <img src="logo-lintas.jpg" alt="Logo LINTAS TATA SAMUDERA" class="site-logo">
+      <span class="logo-text">LINTAS TATA SAMUDERA</span>
+    </div>
+  </a>
+  <nav>
+    <a href="cek-ongkir.html" class="active">Cek Ongkir</a>
+    <a href="cek-resi.html">Cek Resi</a>
+    <a href="index.html#services">Layanan Armada</a>
+    
+    <div class="dropdown">
+      <span class="dropdown-btn">Perusahaan <i class="fa-solid fa-chevron-down"></i></span>
+      <div class="dropdown-menu">
+        <a href="tentang-kami.html">Tentang Kami</a>
+        <a href="index.html#contact">Kontak</a>
+        <a href="cek-resi.html#feedbackForm">Kritik & Saran</a>
+      </div>
+    </div>
+
+    <a href="index.html#contact" class="btn-nav-wa"><i class="fa-brands fa-whatsapp"></i> Hubungi Kami</a>
+  </nav>
+</header>
+
+<!-- Banner Header Halaman -->
+<section class="about-hero">
+  <h1>Kalkulator Cek Ongkir Kargo</h1>
+  <p>Hitung estimasi biaya pengiriman barang antar kota dan pulau dengan akurat dan transparan.</p>
+</section>
+
+<!-- Container utama kalkulator -->
+<section class="container" style="padding: 50px 20px;">
+  <div class="ongkir-wrapper">
+    <form id="ongkirForm" class="ongkir-form-card">
+      <h3><i class="fa-solid fa-calculator"></i> Simulasi Tarif Pengiriman</h3>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="asalKirim">Kota Asal</label>
+          <input type="text" id="asalKirim" placeholder="Contoh: Jakarta" required>
+        </div>
+        <div class="form-group">
+          <label for="tujuanKirim">Kota Tujuan</label>
+          <input type="text" id="tujuanKirim" placeholder="Contoh: Surabaya" required>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="beratBarang">Perkiraan Berat (Kg)</label>
+          <input type="number" id="beratBarang" placeholder="Contoh: 50" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="jenisLayanan">Jenis Layanan</label>
+          <select id="jenisLayanan">
+            <option value="Kargo Darat / Laut">Kargo Darat / Laut (Hemat)</option>
+            <option value="Sewa Truk FTL">Sewa Truk FTL (Full Truck)</option>
+            <option value="Kargo Udara">Kargo Udara (Express)</option>
+            <option value="Pengiriman Motor/Mobil">Pengiriman Kendaraan</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-hitung"><i class="fa-solid fa-magnifying-glass-dollar"></i> Cek Estimasi Tarif</button>
+    </form>
+
+    <!-- Hasil Estimasi Ongkir -->
+    <div id="hasilOngkir" class="result-card" style="display: none;">
+      <h4><i class="fa-solid fa-receipt"></i> Estimasi Biaya Pengiriman</h4>
+      <div class="price-box">
+        <span class="label">Rute:</span>
+        <strong id="resRute">-</strong>
+      </div>
+      <div class="price-box">
+        <span class="label">Layanan:</span>
+        <span id="resLayanan">-</span>
+      </div>
+      <div class="price-box highlight">
+        <span class="label">Estimasi Total:</span>
+        <strong id="resHarga" class="price-text">Rp -</strong>
+      </div>
+      <p class="note">*Tarif di atas merupakan estimasi awal. Hubungi CS untuk nego volume besar / B2B.</p>
+      
+      <a id="btnWaBooking" href="#" target="_blank" class="btn-wa-booking">
+        <i class="fa-brands fa-whatsapp"></i> Pesan & Booking Armada via WA
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Script Hitung Sederhana -->
+<script>
+  document.getElementById('ongkirForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const asal = document.getElementById('asalKirim').value;
+    const tujuan = document.getElementById('tujuanKirim').value;
+    const berat = parseFloat(document.getElementById('beratBarang').value) || 1;
+    const layanan = document.getElementById('jenisLayanan').value;
+
+    // Logika estimasi harga dasar per kg
+    let tarifPerKg = 3500;
+    if (layanan.includes('Udara')) tarifPerKg = 18000;
+    if (layanan.includes('FTL')) tarifPerKg = 8000;
+
+    const total = berat * tarifPerKg;
+    const formattedTotal = "Rp " + total.toLocaleString('id-ID');
+
+    // Tampilkan Hasil
+    document.getElementById('resRute').innerText = `${asal} ➔ ${tujuan}`;
+    document.getElementById('resLayanan').innerText = `${layanan} (${berat} Kg)`;
+    document.getElementById('resHarga').innerText = formattedTotal;
+
+    // Link WhatsApp Otomatis
+    const pesan = `Halo Admin LINTAS TATA SAMUDERA, saya mau pesan pengiriman:\n- Rute: ${asal} ke ${tujuan}\n- Berat: ${berat} Kg\n- Layanan: ${layanan}\n- Estimasi Web: ${formattedTotal}`;
+    document.getElementById('btnWaBooking').href = `https://wa.me/6289665710803?text=${encodeURIComponent(pesan)}`;
+
+    document.getElementById('hasilOngkir').style.display = 'block';
+  });
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

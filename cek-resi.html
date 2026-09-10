@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Resi - LINTAS TATA SAMUDERA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="tracking-page">
+
+  <!-- Header -->
+  <header>
+    <a href="index.html" class="logo-link">
+  <div class="logo-wrapper">
+    <img src="logo-lintas.jpg" alt="Logo LINTAS TATA SAMUDERA" class="site-logo">
+    <span class="logo-text">LINTAS TATA SAMUDERA</span>
+  </div>
+</a>
+    <nav>
+  <a href="index.html#home">Tarif Pengiriman</a>
+  <a href="cek-resi.html">Cek Resi</a>
+  <a href="index.html#services">Layanan Armada</a>
+  
+  <!-- Dropdown Menu Perusahaan -->
+  <div class="dropdown">
+    <a href="#" class="dropdown-btn">Perusahaan <i class="fa-solid fa-chevron-down"></i></a>
+   <div class="dropdown-menu">
+  <a href="tentang-kami.html">Tentang Kami</a> <!-- Pastikan mengarah ke file tentang-kami.html -->
+  <a href="index.html#contact">Kontak</a>
+  <a href="cek-resi.html#feedbackForm">Kritik & Saran</a>
+</div>
+  </div>
+
+  <a href="index.html#contact" class="btn-nav-wa"><i class="fa-brands fa-whatsapp"></i> Hubungi Kami</a>
+</nav>
+  </header>
+
+<!-- Main Section Cek Resi -->
+  <main class="resi-container">
+    <h1 class="page-title">CEK RESI</h1>
+    <p class="page-subtitle">Masukkan nomor resi Anda untuk mengetahui status paket terkini.</p>
+
+    <!-- Search Box (Cukup 1 Form Ini) -->
+    <form id="resiForm" class="search-resi-box">
+      <div class="input-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="noResi" placeholder="no.resi (contoh: LTS-12345)" required>
+        <button type="submit" class="btn-lacak">Lacak</button>
+      </div>
+    </form>
+
+    <!-- Kontainer Hasil Tracking (Muncul Dinamis Saat Diklil Lacak) -->
+    <div id="trackingResult" class="tracking-result-card" style="display: none;"></div>
+
+    <!-- Form Kritik & Saran -->
+    <div class="feedback-card">
+      <h3>Kritik & Saran</h3>
+      <form id="feedbackForm">
+        <div class="form-row">
+          <div class="input-field">
+            <label>Nama <span>*</span></label>
+            <input type="text" id="fbNama" placeholder="Name" required>
+          </div>
+          <div class="input-field">
+            <label>Nomor Whatsappp <span>*</span></label>
+            <input type="text" id="fbWa" placeholder="081123456789" required>
+          </div>
+        </div>
+        <div class="input-field full-width">
+          <label>Saran & Kritik <span>*</span></label>
+          <textarea id="fbPesan" rows="4" placeholder="Message" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit-feedback">Kirim</button>
+      </form>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Rute Pengiriman Terpopuler -->
+    <div class="popular-routes">
+      <h3>RUTE PENGIRIMAN TERPOPULER</h3>
+      <ul class="routes-list">
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Makassar</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Manado</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Samarinda</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Surabaya</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Banjarmasin</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Balikpapan</li>
+        <li><i class="fa-solid fa-truck"></i> Pengiriman Cargo Jakarta Kendari</li>
+      </ul>
+    </div>
+    <hr class="divider">
+
+    <!-- SEPUTAR WEBSITE -->
+    <div class="footer-info-section">
+      <h2 class="section-title-center">SEPUTAR WEBSITE LINTAS TATA SAMUDERA</h2>
+
+      <div class="guides-grid">
+        <div class="guide-col">
+          <h4>PANDUAN PENGGUNA</h4>
+          <ul>
+            <li><i class="fa-solid fa-circle-info"></i> Kebijakan Privasi</li>
+            <li><i class="fa-solid fa-circle-info"></i> Syarat dan Ketentuan Umum</li>
+          </ul>
+        </div>
+        <div class="guide-col">
+          <h4>PANDUAN PELANGGAN</h4>
+          <ul>
+            <li><i class="fa-solid fa-circle-info"></i> Cara Kirim Barang via LTS Express</li>
+            <li><i class="fa-solid fa-circle-info"></i> Prosedur Klaim dan Komplain</li>
+          </ul>
+        </div>
+      </div>
+      <!-- GUDANG & KANTOR PUSAT -->
+      <div class="office-grid">
+        <div class="office-box">
+          <h3>Gudang Pusat</h3>
+          <p>Jl. I Gusti Ngurah Rai No.38, RT.006/RW.014, Bintara, Kec. Bekasi Barat, Kota Bekasi, Jawa Barat 17134</p>
+          <div class="office-contacts">
+            <span><i class="fa-brands fa-whatsapp"></i> Aulia (0811-4505-900)</span>
+            <span><i class="fa-brands fa-whatsapp"></i> Oktavia (0811-1027-728)</span>
+          </div>
+        </div>
+
+        <div class="office-box">
+          <h3>Kantor Pusat</h3>
+          <p>Jl. H. R. Rasuna Said No.Kav.1, Lt. LG No.42, Kel. Guntur, Kec. Setiabudi, Jakarta Selatan, DKI Jakarta 12980</p>
+          <div class="office-contacts">
+            <span><i class="fa-brands fa-whatsapp"></i> Customer Care (0896-6571-0803)</span>
+          </div>
+        </div>
+      </div>
+  <!-- Floating WA -->
+  <a href="https://wa.me/6289665710803?text=Halo%20Admin,%20saya%20ingin%20lacak%20resi" class="float-wa" target="_blank">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>

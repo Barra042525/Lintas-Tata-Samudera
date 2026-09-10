@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Proses Bongkar Muat di Gudang",
+    "image": "logo-pergudangan.jpg",
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "Pengiriman Lintas Jawa & Sumatera",
+    "image": "hero-truck.jpg",
+    "active": true
+  },
+  {
+    "id": 3,
+    "title": "Handling Kargo Skala Besar",
+    "image": "hero-kapal.jpg",
+    "active": true
+  },
+  {
+    "id": 4,
+    "title": "Proses Packing & Packaging",
+    "image": "logo-packing.jpg",
+    "active": false
+  }
+]
