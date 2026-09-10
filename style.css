@@ -1586,81 +1586,67 @@ body.tracking-page {
   }
 }
 /* ==========================================
-   PERBAIKAN HEADER MOBILE (SCROLLABLE & RAPI)
+   KEMBALI KE TAMPILAN AWAL (VERTIKAL BERURUTAN)
    ========================================== */
 @media screen and (max-width: 768px) {
-  /* Header Kontainer Utama */
+  /* Header & Navigasi Vertikal di Tengah */
   header, .navbar {
     display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
+    flex-direction: column !important;
     align-items: center !important;
-    padding: 8px 12px !important;
+    padding: 15px 10px !important;
+    height: auto !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    overflow-x: hidden !important; /* Mencegah halaman utama bisa di-scroll ke kanan */
   }
 
-  /* Logo Kiri dengan Jarak Cukup ke Menu */
+  /* Logo Pusat Tengah */
   .logo-wrapper, .logo-link {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
-    margin-right: 15px !important; /* Jarak memisahkan nama PT dengan menu */
-    flex-shrink: 0 !important; /* Mencegah logo terkikis */
+    justify-content: center !important;
+    margin-bottom: 12px !important;
   }
 
   .site-logo {
-    height: 24px !important;
+    height: 32px !important;
     width: auto !important;
   }
 
   .logo-text {
-    font-size: 12px !important;
+    font-size: 16px !important;
     font-weight: bold !important;
-    white-space: nowrap !important;
   }
 
-  /* Menu Navigasi Kanan (Bisa di-scroll kesamping secara mulus di HP) */
+  /* Navigasi Susun Bawah (Vertikal) */
   nav {
     display: flex !important;
-    flex-direction: row !important;
+    flex-direction: column !important;
     align-items: center !important;
-    gap: 12px !important; /* Jarak lega antar menu */
-    overflow-x: auto !important; /* Aktifkan scroll horizontal khusus menu */
-    white-space: nowrap !important;
-    padding-bottom: 2px !important;
-    -webkit-overflow-scrolling: touch !important; /* Smooth scroll di iPhone/Android */
-  }
-
-  /* Sembunyikan Scrollbar Supaya Tetap Estetik */
-  nav::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  /* Sub-menu Item */
-  nav a, nav .dropdown-btn {
-    font-size: 11px !important;
-    padding: 4px 6px !important;
-    display: inline-block !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Tombol Hubungi Kami Ringkas & Pas di Layar */
-  .btn-nav-wa {
-    font-size: 11px !important;
-    padding: 6px 10px !important;
-    border-radius: 4px !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Fix Layout Body & Container Supaya Tidak Geser Kanan */
-  body, html {
-    overflow-x: hidden !important;
     width: 100% !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Widget Cek Ongkir & Form */
+  /* Sub-menu Item Vertikal */
+  nav a, nav .dropdown, nav .dropdown-btn {
+    font-size: 14px !important;
+    padding: 4px 0 !important;
+    text-align: center !important;
+    display: inline-block !important;
+    width: auto !important;
+  }
+
+  /* Tombol Hubungi Kami di Tengah */
+  .btn-nav-wa {
+    font-size: 13px !important;
+    padding: 8px 20px !important;
+    margin-top: 5px !important;
+    display: inline-block !important;
+  }
+
+  /* Form & Hero Section Responsif */
   .hero-content, .search-box, .widget-form {
     width: 95% !important;
     margin: 0 auto !important;
