@@ -1586,83 +1586,73 @@ body.tracking-page {
   }
 }
 /* ==========================================
-   PERBAIKAN MOBILE: NAVIGASI SEJAJAR (HORIZONTAL)
+   PERBAIKAN MOBILE: HEADER SEJAJAR KIRI-KANAN
    ========================================== */
 @media screen and (max-width: 768px) {
-  /* Header Tetap Horisontal & Rapi */
-  header, .navbar, nav {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    padding: 8px 5px !important;
-    height: auto !important;
-  }
-
-  /* Logo */
-  .logo-wrapper, .logo-link {
-    margin-bottom: 6px;
-    text-align: center;
-  }
-  
-  .logo-text {
-    font-size: 16px !important;
-  }
-
-  /* Menu Navigasi Berjejer Kesamping (Horizontal) */
-  nav ul, .nav-links {
+  /* Header Menyamping (Logo Kiri, Menu Kanan) */
+  header, .navbar {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: wrap !important; /* Agar otomatis lanjut ke bawah jika layar sangat sempit */
-    justify-content: center !important;
+    justify-content: space-between !important;
     align-items: center !important;
+    padding: 10px 12px !important;
     width: 100% !important;
-    gap: 8px 12px !important; /* Jarak antar menu */
-    padding: 0 !important;
-    margin: 5px 0 !important;
+    box-sizing: border-box !important;
   }
 
-  nav ul li, .nav-links a {
-    display: inline-block !important;
+  /* Area Logo Kiri */
+  .logo-wrapper, .logo-link {
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .site-logo {
+    height: 28px !important;
     width: auto !important;
-    font-size: 11px !important; /* Ukuran font disesuaikan untuk HP */
+  }
+
+  .logo-text {
+    font-size: 13px !important;
     white-space: nowrap !important;
   }
 
-  /* Tombol Hubungi Kami Ringkas */
-  .btn-hubungi, .btn-primary {
-    width: auto !important;
-    padding: 5px 12px !important;
-    font-size: 11px !important;
-    margin-top: 4px;
+  /* Navigasi Kanan (Berjejer Kesamping) */
+  nav {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    flex-wrap: nowrap !important;
   }
 
-  /* Form Cek Ongkir & Cek Resi Tetap Rapi */
-  .hero-content, .search-box, .tab-content, .form-group {
+  nav a, nav .dropdown-btn {
+    font-size: 10px !important;
+    padding: 4px 5px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Tombol Hubungi Kami di HP */
+  .btn-nav-wa {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Form & Hero Section tetap responsif */
+  .hero-content, .search-box, .widget-form {
     width: 95% !important;
-    max-width: 100% !important;
     margin: 0 auto !important;
     padding: 10px !important;
     box-sizing: border-box !important;
   }
 
-  .form-row, .input-group, .tab-container {
+  .input-group {
     flex-direction: column !important;
     gap: 8px !important;
   }
 
-  input[type="text"], select, .btn-search {
+  input[type="text"], .btn-search {
     width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero h1, h1 {
-    font-size: 20px !important;
-    line-height: 1.3 !important;
-    text-align: center;
-  }
-
-  .hero p, p {
-    font-size: 12px !important;
-    text-align: center;
   }
 }
