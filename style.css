@@ -1590,7 +1590,11 @@ body.tracking-page {
    ========================================== */
 @media screen and (max-width: 768px) {
   /* Header & Navigasi Vertikal di Tengah */
+  /* Header & Navigasi Vertikal di Tengah (Ikut ter-scroll) */
   header, .navbar {
+    position: relative !important; /* Membuat header terdorong ke atas saat scroll */
+    top: 0 !important;
+    left: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -1598,6 +1602,7 @@ body.tracking-page {
     height: auto !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    z-index: 10 !important;
   }
 
   /* Logo Pusat Tengah */
