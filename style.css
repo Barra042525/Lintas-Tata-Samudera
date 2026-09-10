@@ -1585,3 +1585,70 @@ body.tracking-page {
     grid-template-columns: 1fr;
   }
 }
+/* ==========================================
+   PERBAIKAN TAMPILAN MOBILE (RESPONSIF)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  /* Fix Header & Navigasi */
+  header, .navbar, nav {
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 10px !important;
+    height: auto !important;
+  }
+
+  .logo-wrapper, .logo-link {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  nav ul, .nav-links {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  nav ul li, .nav-links a {
+    display: block !important;
+    width: 100% !important;
+    font-size: 14px !important;
+  }
+
+  .btn-hubungi, .btn-primary, button {
+    width: 100% !important;
+    margin-top: 5px;
+  }
+
+  /* Fix Form Cek Ongkir & Cek Resi */
+  .hero-content, .search-box, .tab-content, .form-group {
+    width: 95% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .form-row, .input-group, .tab-container {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  input[type="text"], select, .btn-search {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fix Typography Hero */
+  .hero h1, h1 {
+    font-size: 22px !important;
+    line-height: 1.3 !important;
+    text-align: center;
+  }
+
+  .hero p, p {
+    font-size: 13px !important;
+    text-align: center;
+  }
+}
