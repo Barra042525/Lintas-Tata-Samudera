@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Ganti dengan nomor WA Admin yang diinginkan
-      var noWA = "6289665710803";
+      var noWA = "6289626400913";
 
       var pesan = "Halo Admin PT Lintas Tata Samudera, saya ingin cek tarif pengiriman barang:\n" +
                   "- Kota Asal: " + asal + "\n" +
@@ -203,4 +203,3 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 }); // Penutup DOMContentLoaded yan
-
