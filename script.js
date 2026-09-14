@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const rute = document.getElementById('rute').value;
       const jenisBarang = document.getElementById('jenisBarang').value;
 
-      const teksPesan = `Halo Admin LINTAS TATA SAMUDERA, saya ingin meminta informasi tarif pengiriman:\n\n` +
+      const teksPesan = `Halo Admin LINTAS TATA SAMUDRA, saya ingin meminta informasi tarif pengiriman:\n\n` +
         `*Nama Pengirim:* ${nama}\n` +
         `*Rute Pengiriman:* ${rute}\n` +
         `*Detail Barang/Muatan:* ${jenisBarang}`;
@@ -189,7 +189,7 @@ function kirimCekOngkirWA() {
   }
 
   var noWA = '6289626400913';
-  var pesan = 'Halo Admin PT Lintas Tata Samudera, saya ingin cek tarif pengiriman barang:\n' +
+  var pesan = 'Halo Admin PT Lintas Tata Samudra, saya ingin cek tarif pengiriman barang:\n' +
               '- Kota Asal: ' + asal + '\n' +
               '- Kota Tujuan: ' + tujuan;
 
