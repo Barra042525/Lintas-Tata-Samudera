@@ -174,5 +174,33 @@ if (galleryContainer) {
       console.error("Gagal memuat galeri:", err);
     });
 }
+// Logika Cek Ongkir ke WhatsApp
+document.addEventListener('DOMContentLoaded', function() {
+  var widgetForm = document.getElementById('widgetForm');
+  
+  if (widgetForm) {
+    widgetForm.addEventListener('submit', function(e) {
+      e.preventDefault(); // Mencegah reload halaman
 
+      var asal = document.getElementById('asal').value.trim();
+      var tujuan = document.getElementById('tujuan').value.trim();
+
+      if (asal === "" || tujuan === "") {
+        alert("Harap isi Kota Asal dan Kota Tujuan terlebih dahulu!");
+        return;
+      }
+
+      // Ganti dengan nomor WA Admin yang diinginkan
+      var noWA = "6289665710803";
+
+      var pesan = "Halo Admin PT Lintas Tata Samudera, saya ingin cek tarif pengiriman barang:\n" +
+                  "- Kota Asal: " + asal + "\n" +
+                  "- Kota Tujuan: " + tujuan;
+
+      var urlWA = "https://wa.me/" + noWA + "?text=" + encodeURIComponent(pesan);
+      window.open(urlWA, '_blank');
+    });
+  }
+});
 }); // Penutup DOMContentLoaded yan
+
