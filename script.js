@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-// ==========================================
+  // ==========================================
   // 4. HANDLER MONITORING CEK RESI (resi-data.json)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
@@ -105,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.json();
         })
         .then((data) => {
-          // Cari kunci resi yang cocok (case-insensitive & abaikan spasi)
           const matchedKey = Object.keys(data).find(
             (key) => key.trim().toUpperCase() === noResi
           );
@@ -147,33 +146,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
-  
-// Handler Dokumentasi & Galeri Dinamis
-const galleryContainer = document.getElementById("galleryContainer");
 
-if (galleryContainer) {
-  fetch("galeri-data.json")
-    .then((response) => response.json())
-    .then((data) => {
-      // Filter hanya gambar yang statusnya ACTIVE
-      const activeImages = data.filter((item) => item.active === true);
+  // ==========================================
+  // 5. HANDLER DOKUMENTASI & GALERI DINAMIS
+  // ==========================================
+  const galleryContainer = document.getElementById("galleryContainer");
 
-      // Render ke dalam HTML
-      galleryContainer.innerHTML = activeImages
-        .map(
-          (item) => `
-          <div class="gallery-card">
-            <img src="${item.image}" alt="${item.title}">
-            <p>${item.title}</p>
-          </div>
-        `
-        )
-        .join("");
-    })
-    .catch((err) => {
-      console.error("Gagal memuat galeri:", err);
-    });
-}
+  if (galleryContainer) {
+    fetch("galeri-data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const activeImages = data.filter((item) => item.active === true);
+
+        galleryContainer.innerHTML = activeImages
+          .map(
+            (item) => `
+            <div class="gallery-card">
+              <img src="${item.image}" alt="${item.title}">
+              <p>${item.title}</p>
+            </div>
+          `
+          )
+          .join("");
+      })
+      .catch((err) => {
+        console.error("Gagal memuat galeri:", err);
+      });
+  }
+
+}); // <-- PENUTUP DOMContentLoaded ADA DI SINI
+
+// ==========================================
+// 6. HANDLER CEK ONGKIR WA (FUNGSI GLOBAL)
+// ==========================================
 function kirimCekOngkirWA() {
   var asal = document.getElementById('asal') ? document.getElementById('asal').value.trim() : '';
   var tujuan = document.getElementById('tujuan') ? document.getElementById('tujuan').value.trim() : '';
@@ -190,4 +195,3 @@ function kirimCekOngkirWA() {
 
   window.open('https://wa.me/' + noWA + '?text=' + encodeURIComponent(pesan), '_blank');
 }
-}); // Penutup DOMContentLoaded yan
