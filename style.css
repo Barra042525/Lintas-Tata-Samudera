@@ -1874,15 +1874,20 @@ body.tracking-page {
   margin-top: 5px;
   font-weight: 600;
 }
-/* Sentuhan Efek Visual Nama Perusahaan */
+/* Styling Warna & Efek Teks Nama Perusahaan */
 .hero-company-tag {
   display: block;
   font-size: 38px;
   font-weight: 800;
-  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 3px;
-  margin-bottom: 6px;
-  /* Tambahkan efek glow tipis & shadow agar makin jelas */
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.2);
+  margin-bottom: 8px;
+  
+  /* Efek Gradasi Emas-Oranye Halus */
+  background: linear-gradient(135deg, #ffffff 0%, #ffeaa7 50%, #ff9f43 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Bayangan Kontras agar Teks Tetap Readability */
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.8));
 }
