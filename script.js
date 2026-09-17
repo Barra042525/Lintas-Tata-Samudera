@@ -89,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  // URL Web App Google Apps Script
   const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby51HkDQG-sIlBa0hC_tKut2amG0upZcrTXtxXmv4xtjpF98AT2wGX4hYpeUaB3G8MyGg/exec";
 
   if (resiForm) {
@@ -108,16 +107,12 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.json();
         })
         .then((data) => {
-          // 1. Bersihkan spasi & ubah ke kapital dari input pencarian user
+          // Normalisasi pencarian pengguna (hapus semua spasi & jadikan huruf besar)
           const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
 
-          // 2. Cocokkan dengan Key di objek JSON data resi
-          const matchedKey = Object.keys(data).find(
-            (key) => key === cleanInput
-          );
-
-          if (matchedKey) {
-            const item = data[matchedKey];
+          // Cari di objek data
+          if (data && data[cleanInput]) {
+            const item = data[cleanInput];
             let historyHTML = item.history
               .map(
                 (h) => `
@@ -128,10 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
               )
               .join("");
 
-            // 3. Tampilkan nomor resi format asli (item.displayResi) agar tetap rapi di UI
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
-                <h3>No. Resi: <strong>${item.displayResi || matchedKey}</strong></h3>
+                <h3>No. Resi: <strong>${item.displayResi || noResi}</strong></h3>
                 <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
                 <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
                   <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
@@ -150,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((err) => {
           console.error(err);
-          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi atau URL Google Apps Script sudah terpasang dengan benar.</p>`;
+          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi internet stabil.</p>`;
         });
     });
   }
