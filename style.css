@@ -1874,3 +1874,15 @@ body.tracking-page {
   margin-top: 5px;
   font-weight: 600;
 }
+/* Sentuhan Efek Visual Nama Perusahaan */
+.hero-company-tag {
+  display: block;
+  font-size: 38px;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+  /* Tambahkan efek glow tipis & shadow agar makin jelas */
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.2);
+}
