@@ -201,3 +201,20 @@ function kirimCekOngkirWA() {
 
   window.open('https://wa.me/' + noWA + '?text=' + encodeURIComponent(pesan), '_blank');
 }
+// HANDLER FLOATING WA MULTI-CONTACT
+const waToggleBtn = document.getElementById("waToggleBtn");
+const waPopup = document.getElementById("waPopup");
+
+if (waToggleBtn && waPopup) {
+  waToggleBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    waPopup.classList.toggle("show");
+  });
+
+  // Tutup popup jika klik di luar widget
+  document.addEventListener("click", function (e) {
+    if (!waPopup.contains(e.target) && !waToggleBtn.contains(e.target)) {
+      waPopup.classList.remove("show");
+    }
+  });
+}
