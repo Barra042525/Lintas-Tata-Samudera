@@ -411,6 +411,10 @@ body.tracking-page {
 
 /* Kontak Tracking */
 .contact-tracking-section {
+  background: linear-gradient(rgba(13, 44, 84, 0.88), rgba(13, 44, 84, 0.88)), 
+              url('hero-kapal.jpg') center/cover no-repeat fixed;
+  padding: 50px 20px;
+  border-radius: 16px;
   margin-bottom: 35px;
 }
 
