@@ -107,13 +107,17 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.json();
         })
         .then((data) => {
-          // Normalisasi pencarian pengguna (hapus semua spasi & jadikan huruf besar)
+          // Bersihkan spasi & jadikan kapital untuk pencocokan fleksibel
           const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
 
-          // Cari di objek data
-          if (data && data[cleanInput]) {
-            const item = data[cleanInput];
-            let historyHTML = item.history
+          // Cari key yang cocok di objek data dari Apps Script
+          const matchedKey = Object.keys(data).find(
+            (key) => key.replace(/\s+/g, '').toUpperCase() === cleanInput
+          );
+
+          if (matchedKey) {
+            const item = data[matchedKey];
+            let historyHTML = (item.history || [])
               .map(
                 (h) => `
                 <div class="timeline-item active">
@@ -125,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
-                <h3>No. Resi: <strong>${item.displayResi || noResi}</strong></h3>
+                <h3>No. Resi: <strong>${matchedKey}</strong></h3>
                 <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
                 <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
                   <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
@@ -144,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((err) => {
           console.error(err);
-          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi internet stabil.</p>`;
+          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi internet Anda stabil.</p>`;
         });
     });
   }
