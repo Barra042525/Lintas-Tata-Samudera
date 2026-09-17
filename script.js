@@ -82,31 +82,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ==========================================
-  // 4. HANDLER MONITORING CEK RESI (resi-data.json)
+// ==========================================
+  // 4. HANDLER MONITORING CEK RESI (GOOGLE SHEETS API)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
+  // URL Web App Google Apps Script
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby51HkDQG-sIlBa0hC_tKut2amG0upZcrTXtxXmv4xtjpF98AT2wGX4hYpeUaB3G8MyGg/exec";
+
   if (resiForm) {
     resiForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      const noResi = noResiInput ? noResiInput.value.trim().toUpperCase() : "";
+      const noResi = noResiInput ? noResiInput.value.trim() : "";
 
       if (!noResi || !trackingResult) return;
 
       trackingResult.style.display = "block";
-      trackingResult.innerHTML = '<p style="color: #64748b;">Mencari data resi...</p>';
+      trackingResult.innerHTML = '<p style="color: #64748b;">Mencari data resi di spreadsheet...</p>';
 
-      fetch("resi-data.json")
+      fetch(GOOGLE_SHEET_API_URL)
         .then((response) => {
-          if (!response.ok) throw new Error("Gagal mengambil data");
+          if (!response.ok) throw new Error("Gagal mengambil data dari Google Sheets");
           return response.json();
         })
         .then((data) => {
+          // 1. Bersihkan spasi & ubah ke kapital dari input pencarian user
+          const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
+
+          // 2. Cocokkan dengan Key di objek JSON data resi
           const matchedKey = Object.keys(data).find(
-            (key) => key.trim().toUpperCase() === noResi
+            (key) => key === cleanInput
           );
 
           if (matchedKey) {
@@ -121,12 +128,13 @@ document.addEventListener("DOMContentLoaded", function () {
               )
               .join("");
 
+            // 3. Tampilkan nomor resi format asli (item.displayResi) agar tetap rapi di UI
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
-                <h3>No. Resi: <strong>${matchedKey}</strong></h3>
+                <h3>No. Resi: <strong>${item.displayResi || matchedKey}</strong></h3>
                 <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
                 <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
-                  <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"}
+                  <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
                 </p>
               </div>
               <div class="timeline-tracking">${historyHTML}</div>
@@ -142,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((err) => {
           console.error(err);
-          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan file resi-data.json sudah tersedia.</p>`;
+          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi atau URL Google Apps Script sudah terpasang dengan benar.</p>`;
         });
     });
   }
@@ -174,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-}); // <-- PENUTUP DOMContentLoaded ADA DI SINI
+}); // <-- PENUTUP DOMContentLoaded
 
 // ==========================================
 // 6. HANDLER CEK ONGKIR WA (FUNGSI GLOBAL)
