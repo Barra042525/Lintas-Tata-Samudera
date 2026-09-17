@@ -1883,11 +1883,12 @@ body.tracking-page {
   letter-spacing: 3px;
   margin-bottom: 8px;
   
-  /* Efek Gradasi Emas-Oranye Halus */
+  /* Efek Gradasi Warna */
   background: linear-gradient(135deg, #ffffff 0%, #ffeaa7 50%, #ff9f43 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   
-  /* Bayangan Kontras agar Teks Tetap Readability */
+  /* Bayangan Kontras */
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.8));
 }
