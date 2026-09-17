@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (feedbackForm) {
     feedbackForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const nomorWA = "6289665710803";
+      const nomorWA = "62895350718365";
       const nama = document.getElementById('fbNama').value;
       const wa = document.getElementById('fbWa').value;
       const pesan = document.getElementById('fbPesan').value;
