@@ -1852,6 +1852,20 @@ body.tracking-page {
     transform: translateY(0);
   }
 }
+/* Subtitle Nama Perusahaan di Hero Section */
+.hero-subtitle {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff6b00; /* Warna aksen oranye disesuaikan dengan tombol */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.15); /* Efek latar transparan tipis */
+  padding: 6px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
 /* Hero Section (Mengembalikan Background Gambar & Overlay) */
 .hero {
   position: relative;
