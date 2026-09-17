@@ -115,17 +115,47 @@ document.addEventListener("DOMContentLoaded", function () {
             (key) => key.replace(/\s+/g, '').toUpperCase() === cleanInput
           );
 
-          if (matchedKey) {
-            const item = data[matchedKey];
-            let historyHTML = (item.history || [])
-              .map(
-                (h) => `
-                <div class="timeline-item active">
-                  <div class="timeline-icon"></div>
-                  <div class="timeline-title">${h}</div>
-                </div>`
-              )
-              .join("");
+     if (matchedKey) {
+      const item = data[matchedKey];
+      let historyHTML = (item.history || [])
+        .map(h => {
+          // 1. Ekstrak teks dalam kurung siku [...] sebagai tanggal
+          const matchTanggal = h.match(/\[(.*?)\]/);
+          let tanggalTeks = "";
+          let statusTeks = h;
+
+          if (matchTanggal) {
+            // Ambil tanggal murni tanpa kurung siku
+            const rawDateStr = matchTanggal[1];
+            // Ambil teks status setelah kurung siku
+            statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
+
+            // Formating tanggal ke format Indonesia yang rapi
+            const d = new Date(rawDateStr);
+            if (!isNaN(d.getTime())) {
+              const tgl = String(d.getDate()).padStart(2, '0');
+              const bulanArr = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+              const bulan = bulanArr[d.getMonth()];
+              const tahun = d.getFullYear();
+              const jam = String(d.getHours()).padStart(2, '0');
+              const menit = String(d.getMinutes()).padStart(2, '0');
+              
+              tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
+            } else {
+              tanggalTeks = rawDateStr; // Fallback jika bukan objek Date valid
+            }
+          }
+
+          // 2. Tampilkan tanggal rapi & status saja
+          return `
+            <div class="timeline-item active">
+              <div class="timeline-icon"></div>
+              <div class="timeline-title">
+                ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ''}${statusTeks}
+              </div>
+            </div>`;
+        })
+        .join("");
 
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
