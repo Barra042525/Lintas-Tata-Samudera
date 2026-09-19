@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!noResi || !trackingResult) return;
 
       trackingResult.style.display = "block";
-      trackingResult.innerHTML = '<p style="color: #64748b;">Mencari data resi di spreadsheet...</p>';
+      trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi</p>';
 
       fetch(GOOGLE_SHEET_API_URL)
         .then((response) => {
