@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (waForm) {
     waForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const nomorWA = "6289665710803";
+      const nomorWA = "6289626400913";
 
       const nama = document.getElementById('nama').value;
       const rute = document.getElementById('rute').value;
