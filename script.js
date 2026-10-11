@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-// ==========================================
+  // ==========================================
   // 4. HANDLER MONITORING CEK RESI (GOOGLE SHEETS API)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!noResi || !trackingResult) return;
 
       trackingResult.style.display = "block";
-      trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi</p>';
+      trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
 
       fetch(GOOGLE_SHEET_API_URL)
         .then((response) => {
@@ -115,83 +115,77 @@ document.addEventListener("DOMContentLoaded", function () {
             (key) => key.replace(/\s+/g, '').toUpperCase() === cleanInput
           );
 
-     if (matchedKey) {
-      const item = data[matchedKey];
-      let historyHTML = (item.history || [])
-        .map(h => {
-          // 1. Ekstrak teks dalam kurung siku [...] sebagai tanggal
-          const matchTanggal = h.match(/\[(.*?)\]/);
-          let tanggalTeks = "";
-          let statusTeks = h;
+          if (matchedKey) {
+            const item = data[matchedKey];
+            let historyHTML = (item.history || [])
+              .map(h => {
+                // 1. Ekstrak teks dalam kurung siku [...] sebagai tanggal
+                const matchTanggal = h.match(/\[(.*?)\]/);
+                let tanggalTeks = "";
+                let statusTeks = h;
 
-          if (matchTanggal) {
-            // Ambil tanggal murni tanpa kurung siku
-            const rawDateStr = matchTanggal[1];
-            // Ambil teks status setelah kurung siku
-            statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
+                if (matchTanggal) {
+                  const rawDateStr = matchTanggal[1];
+                  statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
 
-            // Formating tanggal ke format Indonesia yang rapi
-            const d = new Date(rawDateStr);
-            if (!isNaN(d.getTime())) {
-              const tgl = String(d.getDate()).padStart(2, '0');
-              const bulanArr = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-              const bulan = bulanArr[d.getMonth()];
-              const tahun = d.getFullYear();
-              const jam = String(d.getHours()).padStart(2, '0');
-              const menit = String(d.getMinutes()).padStart(2, '0');
-              
-              tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
-            } else {
-              tanggalTeks = rawDateStr; // Fallback jika bukan objek Date valid
+                  const d = new Date(rawDateStr);
+                  if (!isNaN(d.getTime())) {
+                    const tgl = String(d.getDate()).padStart(2, '0');
+                    const bulanArr = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                    const bulan = bulanArr[d.getMonth()];
+                    const tahun = d.getFullYear();
+                    const jam = String(d.getHours()).padStart(2, '0');
+                    const menit = String(d.getMinutes()).padStart(2, '0');
+                    
+                    tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
+                  } else {
+                    tanggalTeks = rawDateStr;
+                  }
+                }
+
+                // 2. Tampilkan tanggal rapi & status saja
+                return `
+                  <div class="timeline-item active">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-title">
+                      ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ''}${statusTeks}
+                    </div>
+                  </div>`;
+              })
+              .join("");
+
+            // Cek apakah ada data foto dari sheet (properti foto atau gambar)
+            let fotoHTML = "";
+            const urlFoto = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
+
+            if (urlFoto && urlFoto.trim() !== "") {
+              fotoHTML = `
+                <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+                  <img src="${urlFoto.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
+                </div>
+              `;
             }
-          }
 
-          // 2. Tampilkan tanggal rapi & status saja
-          return `
-            <div class="timeline-item active">
-              <div class="timeline-icon"></div>
-              <div class="timeline-title">
-                ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ''}${statusTeks}
+            trackingResult.innerHTML = `
+              <div class="tracking-header-info">
+                <h3>No. Resi: <strong>${matchedKey}</strong></h3>
+                <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
+                <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
+                  <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
+                </p>
               </div>
-            </div>`;
-        })
-        .join("");
-
-      // Cek apakah ada data foto dari sheet (properti foto atau gambar)
-      let fotoHTML = "";
-      if (item.foto && item.foto.trim() !== "") {
-        fotoHTML = `
-          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
-            <img src="${item.foto.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
-          </div>
-        `;
-      } else if (item.gambar && item.gambar.trim() !== "") {
-        fotoHTML = `
-          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
-            <img src="${item.gambar.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
-          </div>
-        `;
-      }
-
-      trackingResult.innerHTML = `
-        <div class="tracking-header-info">
-          <h3>No. Resi: <strong>${matchedKey}</strong></h3>
-          <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
-          <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
-            <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
-          </p>
-        </div>
-        <div class="timeline-tracking">${historyHTML}</div>
-        ${fotoHTML}
-      `;
+              <div class="timeline-tracking">${historyHTML}</div>
+              ${fotoHTML}
+            `;
+          } else {
             trackingResult.innerHTML = `
               <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626;">
                 <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem.</p>
               </div>
             `;
           }
+          
           trackingResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
         })
         .catch((err) => {
@@ -249,6 +243,7 @@ function kirimCekOngkirWA() {
 
   window.open('https://wa.me/' + noWA + '?text=' + encodeURIComponent(pesan), '_blank');
 }
+
 // HANDLER FLOATING WA MULTI-CONTACT
 const waToggleBtn = document.getElementById("waToggleBtn");
 const waPopup = document.getElementById("waPopup");
