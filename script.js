@@ -154,19 +154,28 @@ document.addEventListener("DOMContentLoaded", function () {
               })
               .join("");
 
-            // Cek apakah ada data foto dari sheet (properti foto atau gambar)
-            let fotoHTML = "";
-            const urlFoto = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
+          // Cek apakah ada data foto dari sheet (properti foto atau gambar)
+      let fotoHTML = "";
+      let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
 
-            if (urlFoto && urlFoto.trim() !== "") {
-              fotoHTML = `
-                <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                  <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
-                  <img src="${urlFoto.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
-                </div>
-              `;
-            }
+      if (srcUrl && srcUrl.trim() !== "") {
+        srcUrl = srcUrl.trim();
 
+        // Jika URL dari Google Drive biasa, konversi ke Direct Image Link
+        if (srcUrl.includes("drive.google.com")) {
+          const driveIdMatch = srcUrl.match(/d\/([a-zA-Z0-9_-]+)/) || srcUrl.match(/id=([a-zA-Z0-9_-]+)/);
+          if (driveIdMatch && driveIdMatch[1]) {
+            srcUrl = `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
+          }
+        }
+
+        fotoHTML = `
+          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+            <img src="${srcUrl}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\'color:#dc2626; font-size:12px;\'>Gagal memuat gambar. Pastikan URL foto dapat diakses publik.</p>';">
+          </div>
+        `;
+      }
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
                 <h3>No. Resi: <strong>${matchedKey}</strong></h3>
