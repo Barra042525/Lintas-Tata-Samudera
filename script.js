@@ -157,17 +157,35 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .join("");
 
-            trackingResult.innerHTML = `
-              <div class="tracking-header-info">
-                <h3>No. Resi: <strong>${matchedKey}</strong></h3>
-                <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
-                <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
-                  <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
-                </p>
-              </div>
-              <div class="timeline-tracking">${historyHTML}</div>
-            `;
-          } else {
+      // Cek apakah ada data foto dari sheet (properti foto atau gambar)
+      let fotoHTML = "";
+      if (item.foto && item.foto.trim() !== "") {
+        fotoHTML = `
+          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+            <img src="${item.foto.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
+          </div>
+        `;
+      } else if (item.gambar && item.gambar.trim() !== "") {
+        fotoHTML = `
+          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+            <img src="${item.gambar.trim()}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;">
+          </div>
+        `;
+      }
+
+      trackingResult.innerHTML = `
+        <div class="tracking-header-info">
+          <h3>No. Resi: <strong>${matchedKey}</strong></h3>
+          <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
+          <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
+            <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
+          </p>
+        </div>
+        <div class="timeline-tracking">${historyHTML}</div>
+        ${fotoHTML}
+      `;
             trackingResult.innerHTML = `
               <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626;">
                 <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem.</p>
