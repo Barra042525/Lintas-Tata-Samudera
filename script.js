@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyMObcJoTATVNEK3EbcHiwySnKcxCvkKgXrJKZ3Pj3h/dev";
+const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/PASTE_URL_EXEC_KAMU_DI_SINI/exec";
 
   if (resiForm) {
     resiForm.addEventListener("submit", function (e) {
