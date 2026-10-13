@@ -88,8 +88,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const resiForm = document.getElementById("resiForm");
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
-exec
-const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTATVM2K3EbchwySnEcoCvoXgkR3JKCDPj3h/exec";
+
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTATVM2K3EbchwySnEcoCvoXgkR3JKCDPj3h/exec";
 
   if (resiForm) {
     resiForm.addEventListener("submit", function (e) {
@@ -101,10 +101,14 @@ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTA
       trackingResult.style.display = "block";
       trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
 
-     fetch(GOOGLE_SHEET_API_URL, {
-  method: "GET",
-  redirect: "follow"
-})
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: "GET",
+        redirect: "follow"
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error("Gagal mengambil data dari Google Sheets");
+          return response.json();
+        })
         .then((data) => {
           // Bersihkan spasi & jadikan kapital untuk pencocokan fleksibel
           const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
@@ -118,7 +122,7 @@ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTA
             const item = data[matchedKey];
             let historyHTML = (item.history || [])
               .map(h => {
-                // 1. Ekstrak teks dalam kurung siku [...] sebagai tanggal
+                // Ekstrak teks dalam kurung siku [...] sebagai tanggal
                 const matchTanggal = h.match(/\[(.*?)\]/);
                 let tanggalTeks = "";
                 let statusTeks = h;
@@ -142,7 +146,6 @@ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTA
                   }
                 }
 
-                // 2. Tampilkan tanggal rapi & status saja
                 return `
                   <div class="timeline-item active">
                     <div class="timeline-icon"></div>
@@ -153,28 +156,28 @@ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTA
               })
               .join("");
 
-          // Cek apakah ada data foto dari sheet (properti foto atau gambar)
-      let fotoHTML = "";
-      let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
+            // Cek bukti foto
+            let fotoHTML = "";
+            let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
 
-      if (srcUrl && srcUrl.trim() !== "") {
-        srcUrl = srcUrl.trim();
+            if (srcUrl && srcUrl.trim() !== "" && srcUrl !== "TIDAK DITEMUKAN" && srcUrl !== "-") {
+              srcUrl = srcUrl.trim();
 
-        // Jika URL dari Google Drive biasa, konversi ke Direct Image Link
-        if (srcUrl.includes("drive.google.com")) {
-          const driveIdMatch = srcUrl.match(/d\/([a-zA-Z0-9_-]+)/) || srcUrl.match(/id=([a-zA-Z0-9_-]+)/);
-          if (driveIdMatch && driveIdMatch[1]) {
-            srcUrl = `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
-          }
-        }
+              if (srcUrl.includes("drive.google.com")) {
+                const driveIdMatch = srcUrl.match(/d\/([a-zA-Z0-9_-]+)/) || srcUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (driveIdMatch && driveIdMatch[1]) {
+                  srcUrl = `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
+                }
+              }
 
-        fotoHTML = `
-          <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
-            <img src="${srcUrl}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\'color:#dc2626; font-size:12px;\'>Gagal memuat gambar. Pastikan URL foto dapat diakses publik.</p>';">
-          </div>
-        `;
-      }
+              fotoHTML = `
+                <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+                  <img src="${srcUrl}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\'color:#dc2626; font-size:12px;\'>Gagal memuat gambar. Pastikan URL foto dapat diakses publik.</p>';">
+                </div>
+              `;
+            }
+
             trackingResult.innerHTML = `
               <div class="tracking-header-info">
                 <h3>No. Resi: <strong>${matchedKey}</strong></h3>
