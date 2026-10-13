@@ -101,10 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       trackingResult.style.display = "block";
       trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
 
-      fetch(GOOGLE_SHEET_API_URL, {
-        method: "GET",
-        redirect: "follow"
-      })
+      fetch(GOOGLE_SHEET_API_URL)
         .then((response) => {
           if (!response.ok) throw new Error("Gagal mengambil data dari Google Sheets");
           return response.json();
