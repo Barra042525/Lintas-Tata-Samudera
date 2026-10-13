@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 4. HANDLER MONITORING CEK RESI (JSONP BYPASS CORS)
+  // 4. HANDLER MONITORING CEK RESI (VIA PROXY BYPASS)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
@@ -101,108 +101,109 @@ document.addEventListener("DOMContentLoaded", function () {
       trackingResult.style.display = "block";
       trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
 
-      // Buat nama callback unik
-      const callbackName = 'handleResiData_' + Math.floor(Math.random() * 100000);
+      // Gunakan Proxy AllOrigins untuk menembus CORS Google Apps Script 100%
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(GOOGLE_SHEET_API_URL)}`;
 
-      window[callbackName] = function (data) {
-        // Hapus elemen script & fungsi callback setelah data didapat
-        delete window[callbackName];
-        const oldScript = document.getElementById(callbackName);
-        if (oldScript) document.body.removeChild(oldScript);
+      fetch(proxyUrl)
+        .then((response) => {
+          if (!response.ok) throw new Error("Gagal mengambil data dari Proxy");
+          return response.json();
+        })
+        .then((proxyData) => {
+          // Parse string JSON dari contents Proxy
+          const data = JSON.parse(proxyData.contents);
 
-        const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
-        const matchedKey = Object.keys(data).find(
-          (key) => key.replace(/\s+/g, '').toUpperCase() === cleanInput
-        );
+          const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
 
-        if (matchedKey) {
-          const item = data[matchedKey];
-          let historyHTML = (item.history || [])
-            .map(h => {
-              const matchTanggal = h.match(/\[(.*?)\]/);
-              let tanggalTeks = "";
-              let statusTeks = h;
+          // Cari key resi yang cocok
+          const matchedKey = Object.keys(data).find(
+            (key) => key.replace(/\s+/g, '').toUpperCase() === cleanInput
+          );
 
-              if (matchTanggal) {
-                const rawDateStr = matchTanggal[1];
-                statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
+          if (matchedKey) {
+            const item = data[matchedKey];
+            let historyHTML = (item.history || [])
+              .map(h => {
+                const matchTanggal = h.match(/\[(.*?)\]/);
+                let tanggalTeks = "";
+                let statusTeks = h;
 
-                const d = new Date(rawDateStr);
-                if (!isNaN(d.getTime())) {
-                  const tgl = String(d.getDate()).padStart(2, '0');
-                  const bulanArr = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-                  const bulan = bulanArr[d.getMonth()];
-                  const tahun = d.getFullYear();
-                  const jam = String(d.getHours()).padStart(2, '0');
-                  const menit = String(d.getMinutes()).padStart(2, '0');
-                  
-                  tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
-                } else {
-                  tanggalTeks = rawDateStr;
+                if (matchTanggal) {
+                  const rawDateStr = matchTanggal[1];
+                  statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
+
+                  const d = new Date(rawDateStr);
+                  if (!isNaN(d.getTime())) {
+                    const tgl = String(d.getDate()).padStart(2, '0');
+                    const bulanArr = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                    const bulan = bulanArr[d.getMonth()];
+                    const tahun = d.getFullYear();
+                    const jam = String(d.getHours()).padStart(2, '0');
+                    const menit = String(d.getMinutes()).padStart(2, '0');
+                    
+                    tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
+                  } else {
+                    tanggalTeks = rawDateStr;
+                  }
+                }
+
+                return `
+                  <div class="timeline-item active">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-title">
+                      ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ''}${statusTeks}
+                    </div>
+                  </div>`;
+              })
+              .join("");
+
+            // Handling Bukti Foto
+            let fotoHTML = "";
+            let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
+
+            if (srcUrl && srcUrl.trim() !== "" && srcUrl !== "TIDAK DITEMUKAN" && srcUrl !== "-") {
+              srcUrl = srcUrl.trim();
+
+              if (srcUrl.includes("drive.google.com")) {
+                const driveIdMatch = srcUrl.match(/d\/([a-zA-Z0-9_-]+)/) || srcUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (driveIdMatch && driveIdMatch[1]) {
+                  srcUrl = `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
                 }
               }
 
-              return `
-                <div class="timeline-item active">
-                  <div class="timeline-icon"></div>
-                  <div class="timeline-title">
-                    ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ''}${statusTeks}
-                  </div>
-                </div>`;
-            })
-            .join("");
-
-          let fotoHTML = "";
-          let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
-
-          if (srcUrl && srcUrl.trim() !== "" && srcUrl !== "TIDAK DITEMUKAN" && srcUrl !== "-") {
-            srcUrl = srcUrl.trim();
-
-            if (srcUrl.includes("drive.google.com")) {
-              const driveIdMatch = srcUrl.match(/d\/([a-zA-Z0-9_-]+)/) || srcUrl.match(/id=([a-zA-Z0-9_-]+)/);
-              if (driveIdMatch && driveIdMatch[1]) {
-                srcUrl = `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
-              }
+              fotoHTML = `
+                <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
+                  <img src="${srcUrl}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\'color:#dc2626; font-size:12px;\'>Gagal memuat gambar. Pastikan URL foto dapat diakses publik.</p>';">
+                </div>
+              `;
             }
 
-            fotoHTML = `
-              <div style="margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                <p style="font-weight: bold; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-image"></i> Bukti Foto Pengiriman:</p>
-                <img src="${srcUrl}" alt="Bukti Pengiriman" style="max-width: 100%; max-height: 350px; border-radius: 6px; object-fit: contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\'color:#dc2626; font-size:12px;\'>Gagal memuat gambar. Pastikan URL foto dapat diakses publik.</p>';">
+            trackingResult.innerHTML = `
+              <div class="tracking-header-info">
+                <h3>No. Resi: <strong>${matchedKey}</strong></h3>
+                <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
+                <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
+                  <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
+                </p>
+              </div>
+              <div class="timeline-tracking">${historyHTML}</div>
+              ${fotoHTML}
+            `;
+          } else {
+            trackingResult.innerHTML = `
+              <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626;">
+                <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem.</p>
               </div>
             `;
           }
-
-          trackingResult.innerHTML = `
-            <div class="tracking-header-info">
-              <h3>No. Resi: <strong>${matchedKey}</strong></h3>
-              <span class="tracking-status-badge">${item.status || "DIPROSES"}</span>
-              <p style="font-size: 13px; color: #64748b; margin-top: 8px;">
-                <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
-              </p>
-            </div>
-            <div class="timeline-tracking">${historyHTML}</div>
-            ${fotoHTML}
-          `;
-        } else {
-          trackingResult.innerHTML = `
-            <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626;">
-              <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem.</p>
-            </div>
-          `;
-        }
-        
-        trackingResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      };
-
-      // Tembakkan request JSONP via element <script>
-      const jsonpScript = document.createElement('script');
-      jsonpScript.id = callbackName;
-      jsonpScript.src = `${GOOGLE_SHEET_API_URL}?callback=${callbackName}`;
-      jsonpScript.onerror = function () {
-        trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi internet Anda stabil.</p>`;
-      };
-      document.body.appendChild(jsonpScript);
+          
+          trackingResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        })
+        .catch((err) => {
+          console.error(err);
+          trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Pastikan koneksi internet Anda stabil.</p>`;
+        });
     });
   }
 
