@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 exec
-const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyMObcJoTATVNEK3EbcHiwySnKcxCvkKgXrJKZ3Pj3h/dev";
+const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyM0bc2OTATVM2K3EbchwySnEcoCvoXgkR3JKCDPj3h/exec";
 
   if (resiForm) {
     resiForm.addEventListener("submit", function (e) {
@@ -101,11 +101,10 @@ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyMObcJoTA
       trackingResult.style.display = "block";
       trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
 
-      fetch(GOOGLE_SHEET_API_URL)
-        .then((response) => {
-          if (!response.ok) throw new Error("Gagal mengambil data dari Google Sheets");
-          return response.json();
-        })
+     fetch(GOOGLE_SHEET_API_URL, {
+  method: "GET",
+  redirect: "follow"
+})
         .then((data) => {
           // Bersihkan spasi & jadikan kapital untuk pencocokan fleksibel
           const cleanInput = noResi.replace(/\s+/g, '').toUpperCase();
