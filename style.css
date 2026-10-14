@@ -1892,3 +1892,104 @@ body.tracking-page {
   /* Bayangan Kontras */
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.8));
 }
+/* ==========================================
+   SECTION MITRA / TRUSTED CLIENTS (ANIMATED MARQUEE)
+   ========================================== */
+.clients-section {
+  padding: 50px 0;
+  background-color: #ffffff;
+  overflow: hidden;
+  text-align: center;
+}
+
+.clients-section .section-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0d2c54;
+  margin-bottom: 8px;
+}
+
+.clients-section .section-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Slider Container */
+.logo-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+/* Masking pudar putih di pinggir */
+.logo-slider::before,
+.logo-slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo-slider::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.logo-slider::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* Track Animasi Jalan (220px x 10 logo = 2200px) */
+.logo-slide-track {
+  display: flex;
+  align-items: center;
+  width: 2200px; 
+  animation: scrollMarquee 20s linear infinite;
+}
+
+/* Pause gerak saat kursor di atas logo */
+.logo-slider:hover .logo-slide-track {
+  animation-play-state: paused;
+}
+
+/* Box Card Logo (200px + margin kiri kanan 10px = total 220px) */
+.slide-logo {
+  width: 200px;
+  height: 90px;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px; /* Padding dibuat sangat tipis (2px) */
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.slide-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center;
+  filter: none !important;
+  opacity: 1;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+  @keyframes scrollMarquee {
+    100% {
+      transform: translateX(-850px);
+    }
+  }
