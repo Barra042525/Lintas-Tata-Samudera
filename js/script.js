@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroSection = document.querySelector('.hero-section') || document.querySelector('.hero');
 
   const heroImages = [
-    'hero-kapal.jpg',
-    'hero-pesawat.jpg',
-    'hero-truck.jpg'
+    'assets/hero-kapal.jpg',
+    'assets/hero-pesawat.jpg',
+    'assets/hero-truck.jpg'
   ];
 
   let currentImageIndex = 0;

@@ -412,7 +412,7 @@ body.tracking-page {
 /* Kontak Tracking */
 .contact-tracking-section {
   background: linear-gradient(rgba(13, 44, 84, 0.88), rgba(13, 44, 84, 0.88)), 
-              url('hero-kapal.jpg') center/cover no-repeat fixed;
+              url('assets/hero-kapal.jpg') center/cover no-repeat fixed;
   padding: 50px 20px;
   border-radius: 16px;
   margin-bottom: 35px;
@@ -951,7 +951,7 @@ body.tracking-page {
 /* Styling Halaman Tentang Kami */
 .about-hero {
   background: linear-gradient(rgba(13, 44, 84, 0.45), rgba(13, 44, 84, 0.45)),
-              url('logo-lintas.jpg');
+              url('assets/logo-lintas.jpg');
   background-size: cover;
   background-position: center;
   padding: 120px 8% 100px 8%; /* Menambah jarak atas-bawah agar banner lebih tinggi */
@@ -1740,7 +1740,7 @@ body.tracking-page {
 /* Background Logistik Khusus Halaman Cek Resi */
 body.tracking-page {
   background: linear-gradient(rgba(13, 44, 84, 0.75), rgba(13, 44, 84, 0.75)), 
-              url('hero-kapal.jpg') center/cover no-repeat fixed !important;
+              url('assets/hero-kapal.jpg') center/cover no-repeat fixed !important;
   min-height: 100vh;
 }
 /* ==========================================

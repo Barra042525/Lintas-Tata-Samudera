@@ -1,131 +1,188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tentang Kami - LINTAS TATA SAMUDRA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <!-- Header Navigasi -->
-  <header>
-  <a href="index.html" class="logo-link">
-  <div class="logo-wrapper">
-    <img src="logo-lintas.jpg" alt="Logo LINTAS TATA SAMUDRA" class="site-logo">
-    <span class="logo-text">LINTAS TATA SAMUDRA</span>
-  </div>
-</a>
-    <nav>
-      <a href="index.html#home">Tarif Pengiriman</a>
-      <a href="cek-resi.html">Cek Resi</a>
-      <a href="index.html#services">Layanan Armada</a>
-      
-      <!-- Dropdown Menu Perusahaan -->
-      <div class="dropdown">
-        <a href="#" class="dropdown-btn">Perusahaan <i class="fa-solid fa-chevron-down"></i></a>
-        <div class="dropdown-menu">
-          <a href="tentang-kami.html">Tentang Kami</a>
-          <a href="index.html#contact">Kontak</a>
-        </div>
-      </div>
-
-      <a href="index.html#contact" class="btn-nav-wa"><i class="fa-brands fa-whatsapp"></i> Hubungi Kami</a>
-    </nav>
-  </header>
-
-  <!-- Banner Halaman -->
-  <section class="about-hero">
-    <h1>PT. LINTAS TATA SAMUDRA</h1>
-    <p>Mengenal profil, sejarah, visi misi, dan komitmen pelayanan ekspedisi kargo kami.</p>
-  </section>
-
-  <!-- Profil Utama -->
-  <section class="container">
-    <div class="about-content">
-      <div class="about-text">
-        <span class="badge-pill">• PROFIL PERUSAHAAN</span>
-        <h2>Mitra Logistik Terpercaya Pengiriman Antar Kota</h2>
-        <p><strong>PT. LINTAS TATA SAMUDRA</strong> merupakan Perusahaan yang bergerak dalam bidang usaha jasa pengiriman barang dengan tujuan seluruh Provinsi dan Kabupaten yang ada di Indonesia. Kami berperan sebagai mitra strategis yang membantu memenuhi kebutuhan logistik Anda secara menyeluruh dengan menekankan keandalan, transparansi, dan efisiensi biaya.</p>
-        <p>Melalui jaringan pengiriman yang luas, meliputi jalur darat, laut, dan udara. Kami menghadirkan solusi pengiriman yang fleksibel dan disesuaikan dengan kebutuhan bisnis dari berbagai skala, mulai dari usaha kecil hingga perusahaan besar.</p>
-      </div>
-      <div class="about-img">
-        <img src="gambar-tentangkami.jpg" alt="Operasional Gudang">
-      </div>
-    </div>
-  </section>
-
-  <!-- Visi Misi -->
-  <section class="container bg-light">
-    <div class="section-title-wrapper">
-      <span class="badge-pill">• LANDASAN BISNIS</span>
-      <h2>Visi & Misi Perusahaan</h2>
-    </div>
-
-    <div class="vm-grid">
-      <div class="vm-card">
-        <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
-        <h3>Visi Perusahaan</h3>
-        <p>“Menjadi platform logistik digital terpercaya yang dan efisien.” menghubungkan Indonesia melalui layanan pengiriman lintas provinsi yang cepat, transparan,.</p>
-      </div>
-
-      <div class="vm-card">
-        <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
-        <h3>Misi Perusahaan</h3>
-        <ul>
-          <li><i class="fa-solid fa-check"></i> • Menyediakan produk jasa angkutan/titipan ke seluruh Indonesia dengan mnegutamakan kepuasan pelanggan.</li>
-          <li><i class="fa-solid fa-check"></i> • Membangun jaringan mitra pengiriman darat, laut, dan udara yang luas serta terintegrasi.</li>
-          <li><i class="fa-solid fa-check"></i> • Menyediakan sistem pelacakan real-time yang transparan dan mudah digunakan.</li>
-           <li><i class="fa-solid fa-check"></i> • Memberikan pelayanan yang responsif, aman, dan berorientasi pada kepuasan pelanggan</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-<!-- Floating WA Widget Multi-Contact -->
-<div class="wa-floating-container">
-  <!-- Pop-up Menu Kontak -->
-  <div class="wa-popup" id="waPopup">
-    <div class="wa-popup-header">
-      <strong>Hubungi Tim Kami</strong>
-      <p>Silakan pilih kontak sesuai kebutuhan Anda:</p>
-    </div>
-    <div class="wa-popup-body">
-      <!-- Admin -->
-      <a href="https://wa.me/6289626400913?text=Halo%20Admin,%20saya%20ingin%20bertanya" target="_blank" class="wa-contact-item">
-        <i class="fa-brands fa-whatsapp"></i>
-        <div>
-          <strong>Admin Operasional</strong>
-          <span>Layanan Informasi Umum & Resi</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Kami - LINTAS TATA SAMUDRA</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header Navigasi -->
+    <header>
+      <a href="index.html" class="logo-link">
+        <div class="logo-wrapper">
+          <img
+            src="assets//logo-lintas.jpg"
+            alt="Logo LINTAS TATA SAMUDRA"
+            class="site-logo"
+          />
+          <span class="logo-text">LINTAS TATA SAMUDRA</span>
         </div>
       </a>
-      <!-- Sales 1 -->
-      <a href="https://wa.me/62895401108017?text=Halo%20Sales,%20saya%20ingin%20tanya%20tarif%20pengiriman" target="_blank" class="wa-contact-item">
-        <i class="fa-brands fa-whatsapp"></i>
-        <div>
-          <strong>Sales Executive Reza</strong>
-          <span>Konsultasi Tarif & Kerjasama</span>
+      <nav>
+        <a href="index.html#home">Tarif Pengiriman</a>
+        <a href="cek-resi.html">Cek Resi</a>
+        <a href="index.html#services">Layanan Armada</a>
+
+        <!-- Dropdown Menu Perusahaan -->
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn"
+            >Perusahaan <i class="fa-solid fa-chevron-down"></i
+          ></a>
+          <div class="dropdown-menu">
+            <a href="tentang-kami.html">Tentang Kami</a>
+            <a href="index.html#contact">Kontak</a>
+          </div>
         </div>
-      </a>
-      <!-- Sales 2 -->
-      <a href="https://wa.me/6283871078594?text=Halo%20Sales,%20saya%20ingin%20tanya%20tarif%20pengiriman" target="_blank" class="wa-contact-item">
-        <i class="fa-brands fa-whatsapp"></i>
-        <div>
-          <strong>Sales Executive Dimas</strong>
-          <span>Konsultasi Tarif & Kerjasama</span>
+
+        <a href="index.html#contact" class="btn-nav-wa"
+          ><i class="fa-brands fa-whatsapp"></i> Hubungi Kami</a
+        >
+      </nav>
+    </header>
+
+    <!-- Banner Halaman -->
+    <section class="about-hero">
+      <h1>PT. LINTAS TATA SAMUDRA</h1>
+      <p>
+        Mengenal profil, sejarah, visi misi, dan komitmen pelayanan ekspedisi
+        kargo kami.
+      </p>
+    </section>
+
+    <!-- Profil Utama -->
+    <section class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <span class="badge-pill">• PROFIL PERUSAHAAN</span>
+          <h2>Mitra Logistik Terpercaya Pengiriman Antar Kota</h2>
+          <p>
+            <strong>PT. LINTAS TATA SAMUDRA</strong> merupakan Perusahaan yang
+            bergerak dalam bidang usaha jasa pengiriman barang dengan tujuan
+            seluruh Provinsi dan Kabupaten yang ada di Indonesia. Kami berperan
+            sebagai mitra strategis yang membantu memenuhi kebutuhan logistik
+            Anda secara menyeluruh dengan menekankan keandalan, transparansi,
+            dan efisiensi biaya.
+          </p>
+          <p>
+            Melalui jaringan pengiriman yang luas, meliputi jalur darat, laut,
+            dan udara. Kami menghadirkan solusi pengiriman yang fleksibel dan
+            disesuaikan dengan kebutuhan bisnis dari berbagai skala, mulai dari
+            usaha kecil hingga perusahaan besar.
+          </p>
         </div>
-      </a>
+        <div class="about-img">
+          <img src="assets//gambar-tentangkami.jpg" alt="Operasional Gudang" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Visi Misi -->
+    <section class="container bg-light">
+      <div class="section-title-wrapper">
+        <span class="badge-pill">• LANDASAN BISNIS</span>
+        <h2>Visi & Misi Perusahaan</h2>
+      </div>
+
+      <div class="vm-grid">
+        <div class="vm-card">
+          <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
+          <h3>Visi Perusahaan</h3>
+          <p>
+            “Menjadi platform logistik digital terpercaya yang dan efisien.”
+            menghubungkan Indonesia melalui layanan pengiriman lintas provinsi
+            yang cepat, transparan,.
+          </p>
+        </div>
+
+        <div class="vm-card">
+          <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>Misi Perusahaan</h3>
+          <ul>
+            <li>
+              <i class="fa-solid fa-check"></i> • Menyediakan produk jasa
+              angkutan/titipan ke seluruh Indonesia dengan mnegutamakan kepuasan
+              pelanggan.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> • Membangun jaringan mitra
+              pengiriman darat, laut, dan udara yang luas serta terintegrasi.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> • Menyediakan sistem pelacakan
+              real-time yang transparan dan mudah digunakan.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> • Memberikan pelayanan yang
+              responsif, aman, dan berorientasi pada kepuasan pelanggan
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating WA Widget Multi-Contact -->
+    <div class="wa-floating-container">
+      <!-- Pop-up Menu Kontak -->
+      <div class="wa-popup" id="waPopup">
+        <div class="wa-popup-header">
+          <strong>Hubungi Tim Kami</strong>
+          <p>Silakan pilih kontak sesuai kebutuhan Anda:</p>
+        </div>
+        <div class="wa-popup-body">
+          <!-- Admin -->
+          <a
+            href="https://wa.me/6289626400913?text=Halo%20Admin,%20saya%20ingin%20bertanya"
+            target="_blank"
+            class="wa-contact-item"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            <div>
+              <strong>Admin Operasional</strong>
+              <span>Layanan Informasi Umum & Resi</span>
+            </div>
+          </a>
+          <!-- Sales 1 -->
+          <a
+            href="https://wa.me/62895401108017?text=Halo%20Sales,%20saya%20ingin%20tanya%20tarif%20pengiriman"
+            target="_blank"
+            class="wa-contact-item"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            <div>
+              <strong>Sales Executive Reza</strong>
+              <span>Konsultasi Tarif & Kerjasama</span>
+            </div>
+          </a>
+          <!-- Sales 2 -->
+          <a
+            href="https://wa.me/6283871078594?text=Halo%20Sales,%20saya%20ingin%20tanya%20tarif%20pengiriman"
+            target="_blank"
+            class="wa-contact-item"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            <div>
+              <strong>Sales Executive Dimas</strong>
+              <span>Konsultasi Tarif & Kerjasama</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tombol WhatsApp Utama -->
+      <button type="button" class="wa-floating-btn" id="waToggleBtn">
+        <i class="fa-brands fa-whatsapp"></i>
+      </button>
     </div>
-  </div>
 
-  <!-- Tombol WhatsApp Utama -->
-  <button type="button" class="wa-floating-btn" id="waToggleBtn">
-    <i class="fa-brands fa-whatsapp"></i>
-  </button>
-</div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
