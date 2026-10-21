@@ -83,14 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 4. HANDLER MONITORING CEK RESI (GOOGLE SHEETS & SICEPAT API)
+  // 4. HANDLER MONITORING CEK RESI (GOOGLE SHEETS)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  // URL DEPLOYMENT APPS SCRIPT TERBARU (VERSI 11)
- const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwoVdZAGyVY9Xx7MjNKjXmrQJy8xvJjGkIuvqg3p-Tu5eJhHf7fEToK2PDytcvBGy4l1w/exec";
+  // URL DEPLOYMENT APPS SCRIPT TERBARU
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzcg1jPLV0vABpl_a0iSG3aXPC2pBe0kWOifC1UXdcgjqRFeCvv_n_kTutevF9-ec_eRA/exec";
 
   function normalizeResi(str) {
     if (!str) return "";
@@ -121,10 +121,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const targetClean = normalizeResi(noResi);
 
-        // Hanya ambil data jika KEY RESI BENAR-BENAR COCOK
         const matchedKey = Object.keys(data).find(
           (key) => normalizeResi(key) === targetClean
-        );       if (matchedKey && data[matchedKey]) {
+        );
+
+        if (matchedKey && data[matchedKey]) {
           const item = data[matchedKey];
           let historyHTML = "";
 
@@ -202,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           trackingResult.innerHTML = `
             <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; text-align: center;">
-              <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem Lintas maupun SiCepat.</p>
+              <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem Lintas.</p>
             </div>
           `;
         }
@@ -212,7 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const jsonpScript = document.createElement("script");
       jsonpScript.id = callbackName;
-      // KUNCI: Menambahkan parameter ?resi=${encodeURIComponent(noResi)} agar Apps Script tahu resi mana yang dicari
       jsonpScript.src = `${GOOGLE_SHEET_API_URL}?resi=${encodeURIComponent(noResi)}&callback=${callbackName}`;
       jsonpScript.onerror = function (err) {
         console.error("JSONP Error:", err);
@@ -247,6 +247,80 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((err) => {
         console.error("Gagal memuat galeri:", err);
       });
+  }
+
+  // ==========================================
+  // 7. HANDLER KALKULATOR CEK ONGKIR GOOGLE SHEETS
+  // ==========================================
+  const ongkirForm = document.getElementById("ongkirForm");
+
+  if (ongkirForm) {
+    ongkirForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const asal = document.getElementById("asalKirim") ? document.getElementById("asalKirim").value.trim() : "JAKARTA";
+      const tujuan = document.getElementById("tujuanKirim") ? document.getElementById("tujuanKirim").value.trim() : "";
+      const beratInput = parseFloat(document.getElementById("beratBarang").value) || 1;
+      const layananText = document.getElementById("jenisLayanan").value;
+
+      if (!tujuan) {
+        alert("Silakan masukkan kota tujuan!");
+        return;
+      }
+
+      const hasilOngkir = document.getElementById("hasilOngkir");
+      if (hasilOngkir) {
+        hasilOngkir.style.display = "block";
+        document.getElementById("resHarga").innerText = "Menghitung...";
+      }
+
+      const callbackOngkirName = "cb_ongkir_" + Math.floor(Math.random() * 1000000);
+
+      window[callbackOngkirName] = function (response) {
+        delete window[callbackOngkirName];
+        const oldScript = document.getElementById(callbackOngkirName);
+        if (oldScript) oldScript.remove();
+
+        if (response && response.status === "success" && response.data && response.data.length > 0) {
+          const item = response.data[0];
+
+          // Cek jenis layanan (Express vs Reguler)
+          const isExpress = layananText.toLowerCase().includes("udara") || layananText.toLowerCase().includes("express");
+          const detailLayanan = isExpress ? item.express : item.reguler;
+
+          const hargaPerKg = detailLayanan.price;
+          const minKg = detailLayanan.minKg;
+
+          // Perhitungan minimal charge
+          const beratDihitung = Math.max(beratInput, minKg);
+          const totalBiaya = beratDihitung * hargaPerKg;
+          const formattedTotal = "Rp " + totalBiaya.toLocaleString("id-ID");
+
+          // Render ke UI HTML
+          if (document.getElementById("resRute")) document.getElementById("resRute").innerText = `${item.origin} ➔ ${item.destination}`;
+          if (document.getElementById("resLayanan")) document.getElementById("resLayanan").innerText = `${layananText} (Min. Charge: ${minKg} Kg | Hitung: ${beratDihitung} Kg)`;
+          if (document.getElementById("resHarga")) document.getElementById("resHarga").innerText = formattedTotal;
+
+          // Pesan WhatsApp Otomatis
+          const pesanWA = `Halo Admin LINTAS TATA SAMUDRA, saya mau pesan pengiriman:\nRute: ${item.origin} ke ${item.destination}\nBerat Input: ${beratInput} Kg (Terhitung Min. Charge: ${beratDihitung} Kg)\nLayanan: ${layananText}\nEstimasi Web: ${formattedTotal}`;
+          
+          if (document.getElementById("btnWaBooking")) {
+            document.getElementById("btnWaBooking").href = `https://wa.me/6289626400913?text=${encodeURIComponent(pesanWA)}`;
+          }
+        } else {
+          alert(`Tarif pengiriman dari ${asal} ke ${tujuan} belum ditemukan di database.`);
+          if (document.getElementById("resHarga")) document.getElementById("resHarga").innerText = "Rp -";
+        }
+      };
+
+      const jsonpOngkir = document.createElement("script");
+      jsonpOngkir.id = callbackOngkirName;
+      jsonpOngkir.src = `${GOOGLE_SHEET_API_URL}?action=cek_tarif&origin=${encodeURIComponent(asal)}&destination=${encodeURIComponent(tujuan)}&callback=${callbackOngkirName}`;
+      jsonpOngkir.onerror = function () {
+        alert("Gagal terhubung ke server database tarif. Silakan periksa koneksi internet.");
+      };
+      document.body.appendChild(jsonpOngkir);
+    });
   }
 
 }); // <-- PENUTUP DOMContentLoaded
