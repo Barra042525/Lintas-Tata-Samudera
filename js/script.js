@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby0zk9GrHls25YIXgDv19jBQ27FghXB0yGtaAWKoKTuz0ckSrZrQUH6oohw7zLTRv_sDw/exec";
+  // URL DEPLOYMENT APPS SCRIPT TERBARU (VERSI 11)
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwVITqwQzyHGpxPDFk9_dzkAVIjlynYF0ZgcIY6ABSplx519HgSRiPQgO9FZY7izqiguQ/exec";
 
   function normalizeResi(str) {
     if (!str) return "";
@@ -120,12 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const targetClean = normalizeResi(noResi);
 
-        // Cari key yang cocok secara fleksibel
+        // Hanya ambil data jika KEY RESI BENAR-BENAR COCOK
         const matchedKey = Object.keys(data).find(
           (key) => normalizeResi(key) === targetClean
-        ) || Object.keys(data)[0];
-
-        if (matchedKey && data[matchedKey]) {
+        );       if (matchedKey && data[matchedKey]) {
           const item = data[matchedKey];
           let historyHTML = "";
 
