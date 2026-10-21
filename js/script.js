@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
   // URL DEPLOYMENT APPS SCRIPT TERBARU (VERSI 11)
- const GOOGLE_SHEET_API_URL = "";
+ const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyQiKYNhNr_dbfcsbNGFxpkRqmU_33Qv1FsiQtTZZoH5tdmwngHsWrCj_ZOMxsJ5Fk4Kw/exec";
 
   function normalizeResi(str) {
     if (!str) return "";
