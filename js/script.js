@@ -83,15 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 4. HANDLER MONITORING CEK RESI (JSONP FLEKSIBEL)
+  // 4. HANDLER MONITORING CEK RESI (GOOGLE SHEETS & SICEPAT API)
   // ==========================================
   const resiForm = document.getElementById("resiForm");
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwVLTqwQaYHGpxPDFk9_dzeAVIJiynYF0ZgclY6ABSplx519Hg5RiPqG9FZY7iz9IgucQ/exec";
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby0zk9GrHls25YIXgDv19jBQ27FghXB0yGtaAWKoKTuz0ckSrZrQUH6oohw7zLTRv_sDw/exec";
 
-  // Fungsi utilitas untuk membersihkan string resi (hapus semua spasi & tanda pemisah)
   function normalizeResi(str) {
     if (!str) return "";
     return String(str).replace(/[\s\-_]+/g, "").toUpperCase();
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!noResi || !trackingResult) return;
 
       trackingResult.style.display = "block";
-      trackingResult.innerHTML = '<p style="color: #64748b;">Sedang Memproses Data Resi...</p>';
+      trackingResult.innerHTML = '<p style="color: #0284c7; font-weight: bold; text-align: center;">Sedang Memproses Data Resi...</p>';
 
       const callbackName = "cb_" + Math.floor(Math.random() * 1000000);
 
@@ -115,54 +114,59 @@ document.addEventListener("DOMContentLoaded", function () {
         if (oldScript) oldScript.remove();
 
         if (!data || data.error) {
-          trackingResult.innerHTML = `<p style="color: #dc2626;">Error: ${data ? data.error : 'Gagal memuat data'}</p>`;
+          trackingResult.innerHTML = `<p style="color: #dc2626; text-align: center;">Error: ${data ? data.error : 'Gagal memuat data'}</p>`;
           return;
         }
 
-        // Normalisasi teks pencarian dari user
         const targetClean = normalizeResi(noResi);
 
         // Cari key yang cocok secara fleksibel
         const matchedKey = Object.keys(data).find(
           (key) => normalizeResi(key) === targetClean
-        );
+        ) || Object.keys(data)[0];
 
-        if (matchedKey) {
+        if (matchedKey && data[matchedKey]) {
           const item = data[matchedKey];
-          let historyHTML = (item.history || [])
-            .map((h) => {
-              const matchTanggal = h.match(/\[(.*?)\]/);
-              let tanggalTeks = "";
-              let statusTeks = h;
+          let historyHTML = "";
 
-              if (matchTanggal) {
-                const rawDateStr = matchTanggal[1];
-                statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
+          if (Array.isArray(item.history) && item.history.length > 0) {
+            historyHTML = item.history
+              .map((h) => {
+                const matchTanggal = h.match(/\[(.*?)\]/);
+                let tanggalTeks = "";
+                let statusTeks = h;
 
-                const d = new Date(rawDateStr);
-                if (!isNaN(d.getTime())) {
-                  const tgl = String(d.getDate()).padStart(2, "0");
-                  const bulanArr = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
-                  const bulan = bulanArr[d.getMonth()];
-                  const tahun = d.getFullYear();
-                  const jam = String(d.getHours()).padStart(2, "0");
-                  const menit = String(d.getMinutes()).padStart(2, "0");
+                if (matchTanggal) {
+                  const rawDateStr = matchTanggal[1];
+                  statusTeks = h.replace(/\[.*?\]\s*/, "").trim();
 
-                  tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
-                } else {
-                  tanggalTeks = rawDateStr;
+                  const d = new Date(rawDateStr);
+                  if (!isNaN(d.getTime())) {
+                    const tgl = String(d.getDate()).padStart(2, "0");
+                    const bulanArr = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
+                    const bulan = bulanArr[d.getMonth()];
+                    const tahun = d.getFullYear();
+                    const jam = String(d.getHours()).padStart(2, "0");
+                    const menit = String(d.getMinutes()).padStart(2, "0");
+
+                    tanggalTeks = `${tgl} ${bulan} ${tahun} ${jam}:${menit} WIB`;
+                  } else {
+                    tanggalTeks = rawDateStr;
+                  }
                 }
-              }
 
-              return `
-                <div class="timeline-item active">
-                  <div class="timeline-icon"></div>
-                  <div class="timeline-title">
-                    ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ""}${statusTeks}
-                  </div>
-                </div>`;
-            })
-            .join("");
+                return `
+                  <div class="timeline-item active" style="margin-bottom: 12px;">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-title" style="font-size: 14px;">
+                      ${tanggalTeks ? `<strong>${tanggalTeks}</strong> - ` : ""}${statusTeks}
+                    </div>
+                  </div>`;
+              })
+              .join("");
+          } else {
+            historyHTML = '<div class="timeline-item"><div class="timeline-title">Belum ada riwayat pengiriman.</div></div>';
+          }
 
           let fotoHTML = "";
           let srcUrl = item.foto || item.gambar || item.FOTO || item.GAMBAR || "";
@@ -193,13 +197,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <strong>Pengirim:</strong> ${item.pengirim || "-"} | <strong>Penerima:</strong> ${item.penerima || "-"} | <strong>Tujuan:</strong> ${item.tujuan || "-"}
               </p>
             </div>
-            <div class="timeline-tracking">${historyHTML}</div>
+            <div class="timeline-tracking" style="margin-top: 15px;">${historyHTML}</div>
             ${fotoHTML}
           `;
         } else {
           trackingResult.innerHTML = `
-            <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626;">
-              <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem.</p>
+            <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; text-align: center;">
+              <p>Nomor resi <strong>${noResi}</strong> tidak ditemukan di sistem Lintas maupun SiCepat.</p>
             </div>
           `;
         }
@@ -209,10 +213,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const jsonpScript = document.createElement("script");
       jsonpScript.id = callbackName;
-      jsonpScript.src = `${GOOGLE_SHEET_API_URL}?callback=${callbackName}`;
+      // KUNCI: Menambahkan parameter ?resi=${encodeURIComponent(noResi)} agar Apps Script tahu resi mana yang dicari
+      jsonpScript.src = `${GOOGLE_SHEET_API_URL}?resi=${encodeURIComponent(noResi)}&callback=${callbackName}`;
       jsonpScript.onerror = function (err) {
         console.error("JSONP Error:", err);
-        trackingResult.innerHTML = `<p style="color: #dc2626;">Gagal memuat data resi. Silakan periksa koneksi atau deployment Apps Script.</p>`;
+        trackingResult.innerHTML = `<p style="color: #dc2626; text-align: center;">Gagal memuat data resi. Silakan periksa koneksi atau deployment Apps Script.</p>`;
       };
       document.body.appendChild(jsonpScript);
     });
@@ -277,7 +282,6 @@ if (waToggleBtn && waPopup) {
     waPopup.classList.toggle("show");
   });
 
-  // Tutup popup jika klik di luar widget
   document.addEventListener("click", function (e) {
     if (!waPopup.contains(e.target) && !waToggleBtn.contains(e.target)) {
       waPopup.classList.remove("show");
