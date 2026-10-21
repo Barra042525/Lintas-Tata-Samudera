@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const noResiInput = document.getElementById("noResi") || document.getElementById("inputResi");
   const trackingResult = document.getElementById("trackingResult") || document.getElementById("resultResi");
 
-  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwUlN46lXOL5JHE_JM5Ca-xXRVnKo2RC_lNLBXeSafPXHMoUCLhS4CBlb5o7HV28RWE8A/exec";
+  const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwVLTqwQaYHGpxPDFk9_dzeAVIJiynYF0ZgclY6ABSplx519Hg5RiPqG9FZY7iz9IgucQ/exec";
 
   // Fungsi utilitas untuk membersihkan string resi (hapus semua spasi & tanda pemisah)
   function normalizeResi(str) {
