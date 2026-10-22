@@ -321,12 +321,26 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       document.body.appendChild(jsonpOngkir);
     });
+
+    // AUTO-RUN KALKULASI JIKA ADA PARAMETER ASAL & TUJUAN DARI HALAMAN UTAMA (INDEX.HTML)
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramAsal = urlParams.get('asal');
+    const paramTujuan = urlParams.get('tujuan');
+
+    if (paramAsal && paramTujuan) {
+      if (document.getElementById("asalKirim")) document.getElementById("asalKirim").value = paramAsal;
+      if (document.getElementById("tujuanKirim")) document.getElementById("tujuanKirim").value = paramTujuan;
+      
+      setTimeout(() => {
+        ongkirForm.dispatchEvent(new Event('submit'));
+      }, 300);
+    }
   }
 
 }); // <-- PENUTUP DOMContentLoaded
 
 // ==========================================
-// 6. HANDLER CEK ONGKIR WA (FUNGSI GLOBAL)
+// 6. HANDLER WIDGET HERO CEK ONGKIR (REDIRECT KE HALAMAN CEK ONGKIR)
 // ==========================================
 function kirimCekOngkirWA() {
   var asal = document.getElementById('asal') ? document.getElementById('asal').value.trim() : '';
@@ -337,12 +351,8 @@ function kirimCekOngkirWA() {
     return;
   }
 
-  var noWA = '6289626400913';
-  var pesan = 'Halo Admin PT Lintas Tata Samudra, saya ingin cek tarif pengiriman barang:\n' +
-              '- Kota Asal: ' + asal + '\n' +
-              '- Kota Tujuan: ' + tujuan;
-
-  window.open('https://wa.me/' + noWA + '?text=' + encodeURIComponent(pesan), '_blank');
+  // Redirect langsung ke halaman cek-ongkir.html membawa query parameter
+  window.location.href = `cek-ongkir.html?asal=${encodeURIComponent(asal)}&tujuan=${encodeURIComponent(tujuan)}`;
 }
 
 // HANDLER FLOATING WA MULTI-CONTACT
